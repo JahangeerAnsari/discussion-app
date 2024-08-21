@@ -16,5 +16,3 @@ export const config = {
     "/(api|trpc)(.*)",
   ],
 };
-// hi this is the change
-// feature 2
