@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+// Profile 
+model  Profile {
+  id String @id @default(uuid())
+  // it will comes from clerk
+  userId String @unique
+  name String
+  // 2. back relationship
+  servers Server[]
+  // back relationship with members
+  members Member[]
+  // back relationship with channels
+  channels Channel[]
+  imageUrl String @db.Text
+  email String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// server 
+model Server {
+  id String @id @default(uuid())
+  name String
+  imageUrl String @db.Text
+  inviteCode String @db.Text
+  //1. let connect to the profile to server
+  profileId String
+  profile Profile @relation(fields: [profileId],references: [id], onDelete: Cascade )
+  members Member[]
+  // relationship with Channel
+  channels Channel[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ @@index([profileId])
+}
+// Each server having a member and every member having a role should
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+ model Member{
+  id String @id @default(uuid())
+  role MemberRole @default(GUEST)
+  // relationship with profile
+  profileId String
+  profile Profile @relation(fields: [profileId],references: [id],onDelete: Cascade)
+  // every member has a relationship with server
+  serverId String
+  server Server @relation(fields: [serverId],references: [id],onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([profileId])
+  @@unique([serverId])
+
+ }
+//  every channel having a channel type 
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+model Channel{
+  id String @id @default(uuid())
+  name String 
+  type ChannelType @default(TEXT)
+  // connect with profile model
+  profileId String 
+  profile Profile @relation(fields: [profileId], references: [id],onDelete: Cascade)
+  // connect with service model
+  serverId String
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([profileId])
+  @@index([serverId])
+}
