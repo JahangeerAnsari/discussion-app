@@ -2,10 +2,17 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import axios from 'axios'
+import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
-  FormDescription,
+ 
   FormField,
   FormItem,
   FormLabel,
@@ -19,13 +26,6 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
-
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { FileUp } from "lucide-react";
-import FileUpload from "@/components/file-upload";
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Server name is required",
@@ -36,6 +36,7 @@ const formSchema = z.object({
 });
 const InitialModal = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter()
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -47,8 +48,16 @@ const InitialModal = () => {
     },
   });
   const isLoading = form.formState.isSubmitting;
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("values", values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+       try {
+        await axios.post("/api/servers",values);
+        form.reset();
+        router.refresh();
+         window.location.reload()
+        
+       } catch (error) {
+        
+       }
   };
   if (!isMounted) {
     return null;
