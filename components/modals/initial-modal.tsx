@@ -35,8 +35,10 @@ const formSchema = z.object({
   }),
 });
 const InitialModal = () => {
-  const [isMoutned, setIsMounted] = useState(false);
-  useEffect(() => {});
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,6 +50,9 @@ const InitialModal = () => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log("values", values);
   };
+  if (!isMounted) {
+    return null;
+  }
   return (
     <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
