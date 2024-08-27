@@ -22,7 +22,7 @@ const ActionToolTip = ({children,side,label,align}:ActionToolTipProps) => {
      {children}
     </TooltipTrigger>
     <TooltipContent side={side} align={align}>
-   {label.toLowerCase()}
+   {label?.toLowerCase()}
     </TooltipContent>
   </Tooltip>
 </TooltipProvider>
