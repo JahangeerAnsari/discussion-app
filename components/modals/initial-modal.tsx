@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from 'axios'
-import FileUpload from "@/components/file-upload";
+
 import { useRouter } from "next/navigation";
 import {
   Form,
@@ -26,6 +26,7 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { FileUpload } from "../file-upload";
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Server name is required",
