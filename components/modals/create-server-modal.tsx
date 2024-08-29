@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useStoreModal } from "@/hooks/use-modal-store";
 
@@ -55,13 +55,12 @@ const CreateServerModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.post("/api/servers", values);
-
+      toast.success(`new server created ${values.name}`);
       form.reset();
       router.refresh();
-
       onClose();
-    } catch (error) {
-      console.log("error on server", error);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
   const handleCloseModal = () => {
@@ -92,7 +91,6 @@ const CreateServerModal = () => {
                   control={form.control}
                   name="imageUrl"
                   render={({ field }) => {
-                  
                     return (
                       <FormItem>
                         <FormControl>
@@ -102,6 +100,7 @@ const CreateServerModal = () => {
                             onChange={field.onChange}
                           />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     );
                   }}
