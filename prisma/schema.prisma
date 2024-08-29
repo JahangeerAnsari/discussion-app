@@ -11,81 +11,80 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
-// Profile 
-model  Profile {
-  id String @id @default(uuid())
-  // it will comes from clerk
-  userId String @unique
-  name String
-  // 2. back relationship
-  servers Server[]
-  // back relationship with members
-  members Member[]
-  // back relationship with channels
-  channels Channel[]
-  imageUrl String @db.Text
-  email String @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+model Profile{
+id String @id @default(uuid())
+userId String @unique
+name String
+// it will provide us more text characters
+imageUrl String @db.Text
+email String @db.Text
+servers Server[]
+members Member[]
+channels Channel[]
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
 
-// server 
-model Server { 
+}
+model Server{
   id String @id @default(uuid())
   name String
   imageUrl String @db.Text
-  inviteCode String @db.Text
-  //1. let connect to the profile to server
+  inviteCode String @unique
+  members Member[]
+  channels Channel[]
+  // relation b/w server and profile are
   profileId String
-  profile Profile @relation(fields: [profileId],references: [id], onDelete: Cascade )
-  members Member[]
-  // relationship with Channel
-  channels Channel[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- @@index([profileId])
-}
-// Each server having a member and every member having a role should
-enum MemberRole {
-  ADMIN
-  MODERATOR
-  GUEST
+  profile Profile @relation(fields: [profileId], references: [id],onDelete: Cascade)
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+@@index([profileId])
 }
 
- model Member{
+// we have different type of members and its roles
+enum MemberRole {
+ADMIN
+MODERATOR
+GUEST
+}
+
+model Member {
   id String @id @default(uuid())
   role MemberRole @default(GUEST)
-  // relationship with profile
-  profileId String
-  profile Profile @relation(fields: [profileId],references: [id],onDelete: Cascade)
-  // every member has a relationship with server
-  serverId String
-  server Server @relation(fields: [serverId],references: [id],onDelete: Cascade)
+  // ever member having server
+  serverId String 
+  server Server @relation(fields: [serverId], references:[id],onDelete: Cascade)
+  // relationship b/w member and profile 
+  profileId String 
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@unique([profileId])
-  @@unique([serverId])
-
- }
-//  every channel having a channel type 
+  
+  @@index([profileId])
+  @@index([serverId]) 
+}
 enum ChannelType {
-  TEXT
-  AUDIO
-  VIDEO
+  TEXT 
+  AUDIO 
+  VIDEO 
 }
 model Channel{
   id String @id @default(uuid())
   name String 
   type ChannelType @default(TEXT)
-  // connect with profile model
-  profileId String 
-  profile Profile @relation(fields: [profileId], references: [id],onDelete: Cascade)
-  // connect with service model
-  serverId String
-  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([profileId])
-  @@index([serverId])
+  // connect channel  with profile
+ 
+  profileId String
+  profile Profile @relation(fields: [profileId], references:[id], onDelete: Cascade)
+// also connect channel with server
+serverId String
+
+server Server @relation(fields: [serverId], references:[id], onDelete: Cascade)
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+@@index([profileId])
+@@index([serverId])
 }
+
+

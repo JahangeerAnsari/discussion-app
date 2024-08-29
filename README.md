@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<!-- About this project  -->
+<!-- 
+Discord is a free communication platform designed for creating communities. It combines features of voice, video, and text chat, allowing users to communicate in real-time. Originally popular among gamers for coordinating gameplay, Discord has since expanded its user base to include various online communities, such as study groups, fan clubs, and work teams.
+
+Key Features:
+Servers and Channels: Users can create or join servers, which are like chat rooms or communities. Each server can have multiple text or voice channels, each dedicated to specific topics or activities.
+Voice and Video Calls: Users can engage in voice calls, video calls, and screen sharing within channels or through direct messages.
+Text Chat: Text channels allow for structured conversations, with support for images, GIFs, and custom emojis.
+Bots and Integrations: Discord supports bots, which are automated programs that can manage tasks, provide information, or entertain users. It also integrates with other platforms like Twitch, YouTube, and more.
+Customizable: Users can customize their servers with roles, permissions, and various settings to control access and functionality.
+Discord is available on multiple platforms, including Windows, macOS, Linux, iOS, Android, and through web browsers.
+
+ -->

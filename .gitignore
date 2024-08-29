@@ -29,8 +29,8 @@ yarn-error.log*
 .env*.local
 .env
 
-# .Readme.md
-.README.md
+
+
 # vercel
 .vercel
 
