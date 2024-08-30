@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
+import { ArrowBigLeftIcon, ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
 import { Separator } from "../ui/separator";
 
 interface ServerHeaderProps {
@@ -70,6 +70,13 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           className="text-rose-500 px-3 py-2 text-center cursor-pointe">
           Delete Server
           <Trash className="h-4 w-4 ml-auto"/>
+        </DropdownMenuItem>
+        )}
+        {!isAdmin && (
+          <DropdownMenuItem
+          className="text-rose-500 px-3 py-2 text-center cursor-pointe">
+          Leave Server
+          <LogOut className="h-4 w-4 ml-auto"/>
         </DropdownMenuItem>
         )}
       </DropdownMenuContent>
