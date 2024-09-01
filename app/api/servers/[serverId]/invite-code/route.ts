@@ -23,7 +23,7 @@ export async function PATCH(
         inviteCode: uuid4(),
       },
     });
-    return NextResponse.json(server,{status:200})
+    return NextResponse.json(server, { status: 200 });
   } catch (error) {
     console.log("[SERVER_ID]", error);
 
