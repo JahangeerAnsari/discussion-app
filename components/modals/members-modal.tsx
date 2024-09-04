@@ -71,6 +71,7 @@ const MembersModal = () => {
       router.refresh();
       // now set the updated data to the modal
       onOpen("members", { server: response.data });
+      setLoadingId("");
       toast.success("Role updated successfully");
     } catch (error: any) {
       toast.error(error.message);
@@ -134,7 +135,7 @@ const MembersModal = () => {
                                 <Shield className="h-4 w-4 mr-2" />
                                 Moderator
                                 {member.role === "MODERATOR" && (
-                                  <ShieldCheck className="h-4 w-4" />
+                                  <ShieldCheck className="h-4 w-4 ml-auto" />
                                 )}
                               </DropdownMenuItem>
                             </DropdownMenuSubContent>
