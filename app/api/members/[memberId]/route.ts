@@ -9,8 +9,6 @@ export async function PATCH(
   try {
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
-    console.log("searchParams", searchParams);
-
     const { role } = await req.json();
     const serverId = searchParams.get("serverId");
     if (!profile) {
