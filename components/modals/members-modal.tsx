@@ -71,10 +71,34 @@ const MembersModal = () => {
       router.refresh();
       // now set the updated data to the modal
       onOpen("members", { server: response.data });
-      setLoadingId("");
+
       toast.success("Role updated successfully");
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoadingId("");
+    }
+  };
+  const handleDeleteMember = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+          memberId,
+        },
+      });
+      console.log("url deteted", url);
+
+      const response = await axios.delete(url);
+      router.refresh();
+      onOpen("members", { server: response.data });
+      toast.success(`Member deleted!`);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoadingId("");
     }
   };
   const handleCloseModal = () => {
@@ -88,7 +112,7 @@ const MembersModal = () => {
             Manage Members
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            {server?.members.length} Members
+            {server?.members?.length} Members
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-8 ml-3 max-h-[420px] pr-6">
@@ -142,7 +166,9 @@ const MembersModal = () => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteMember(member.id)}
+                        >
                           <Gavel className="h-4 w-4 mr-2" />
                           Kick
                         </DropdownMenuItem>
