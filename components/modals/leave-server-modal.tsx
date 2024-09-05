@@ -50,7 +50,7 @@ const LeaveServerModal = () => {
         router.push("/");
         router.refresh();
       }
-      toast.success(`Member Leave  from ${server.name}`);
+      toast.success(`Member Leave  from ${server?.name}`);
       router.refresh();
     } catch (error) {
       console.log(error);
