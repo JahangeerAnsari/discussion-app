@@ -19,7 +19,6 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { Separator } from "../ui/separator";
 import { useStoreModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
@@ -27,9 +26,12 @@ interface ServerHeaderProps {
   role?: MemberRole;
 }
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
+  console.log("server with role", server, role);
+
   const { onOpen } = useStoreModal();
   const isAdmin = role === MemberRole.ADMIN;
-  const isModerator = isAdmin || MemberRole.MODERATOR;
+  const isModerator = isAdmin || role === MemberRole.MODERATOR;
+  console.log("isModerator", isModerator);
 
   return (
     <DropdownMenu>
@@ -84,7 +86,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && <DropdownMenuSeparator />}
         {isAdmin && (
           <DropdownMenuItem
-           
+            onClick={() => onOpen("deleteServer", { server })}
             className="text-rose-500 px-3 py-2 text-center cursor-pointe"
           >
             Delete Server
@@ -93,8 +95,9 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         )}
         {!isAdmin && (
           <DropdownMenuItem
-          onClick={() => onOpen("leaveServer",{server})}
-          className="text-rose-500 px-3 py-2 text-center cursor-pointe">
+            onClick={() => onOpen("leaveServer", { server })}
+            className="text-rose-500 px-3 py-2 text-center cursor-pointe"
+          >
             Leave Server
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>

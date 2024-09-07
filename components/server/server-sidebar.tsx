@@ -33,6 +33,8 @@ const ServerSideBar = async ({serverId}:ServerSideBarProps) => {
       }
      }
     })
+    console.log("server---22",server);
+    
     // filter out the channels and its types
     const textChannel = server?.channels.filter((channel) => channel.type === ChannelType.TEXT)
     const audiChannel = server?.channels.filter((channel) => channel.type === ChannelType.AUDIO)

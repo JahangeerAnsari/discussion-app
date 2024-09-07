@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -28,29 +28,26 @@ import {
 import { useStoreModal } from "@/hooks/use-modal-store";
 import toast from "react-hot-toast";
 
-const LeaveServerModal = () => {
-  const { isOpen, onClose, data, type } = useStoreModal();
-  const isModalOpen = isOpen && type === "leaveServer";
+const DeleteServerModal = () => {
+  const { isOpen, onClose, type, data } = useStoreModal();
+  const isModalOpen = isOpen && type === "deleteServer";
   const router = useRouter();
   const { server } = data;
   const [isLoading, setIsLoading] = useState(false);
   const handleCloseModal = () => {
     onClose();
   };
-  const handleLeaveServer = async () => {
+  const handleDeleteServer = async () => {
     try {
       setIsLoading(true);
-
-      const res = await axios.patch(`/api/servers/${server?.id}/leave`);
-      console.log("res");
-
+      const res = await axios.delete(`/api/servers/${server?.id}/`);
       if (res) {
         onClose();
         router.refresh();
         router.push("/");
         router.refresh();
       }
-      toast.success(`Member Removed from ${server?.name} server`);
+      toast.success(`Server Deleted!`);
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -66,7 +63,7 @@ const LeaveServerModal = () => {
             Leave Server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Are you want to leave{" "}
+            Are you want to Delete This Server{" "}
             <span className="font-semibold text-indigo-500">
               {server?.name}
             </span>
@@ -85,7 +82,7 @@ const LeaveServerModal = () => {
             <Button
               disabled={isLoading}
               variant="primary"
-              onClick={() => handleLeaveServer()}
+              onClick={() => handleDeleteServer()}
             >
               Yes
             </Button>
@@ -96,4 +93,4 @@ const LeaveServerModal = () => {
   );
 };
 
-export default LeaveServerModal;
+export default DeleteServerModal;
