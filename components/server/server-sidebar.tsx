@@ -63,6 +63,8 @@ const ServerSideBar = async ({ serverId }: ServerSideBarProps) => {
   const members = server?.members.filter(
     (member) => member.profileId !== profile.id
   );
+  console.log("members",members);
+  
   // find out the role of the profile which all the server created
   const role = server?.members.find(
     (member) => member.profileId === profile.id

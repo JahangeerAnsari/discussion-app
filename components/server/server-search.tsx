@@ -11,7 +11,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { document } from "postcss";
 
 interface ServerSearchProps {
   data: {
@@ -28,6 +29,18 @@ interface ServerSearchProps {
 }
 const ServerSearch = ({ data }: ServerSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsOpen((isOpen) => !isOpen);
+      }
+    };
+    // Use window.document explicitly to avoid conflicts
+    window.document.addEventListener("keydown", down);
+
+    return () => window.document.removeEventListener("keydown", down);
+  }, []);
   return (
     <>
       <button
