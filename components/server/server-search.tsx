@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/command";
 import { useEffect, useState } from "react";
 import { document } from "postcss";
+import { useParams, useRouter } from "next/navigation";
 
 interface ServerSearchProps {
   data: {
@@ -29,6 +30,8 @@ interface ServerSearchProps {
 }
 const ServerSearch = ({ data }: ServerSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const params = useParams();
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -41,6 +44,21 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
 
     return () => window.document.removeEventListener("keydown", down);
   }, []);
+  const handleNavigation = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "member" | "channel";
+  }) => {
+    setIsOpen(false);
+    if (type === "channel") {
+      return router.push(`/servers/${params?.serverId}/channels/${id}`);
+    }
+    if (type === "member") {
+      return router.push(`/servers/${params?.serverId}/conversations/${id}`);
+    }
+  };
   return (
     <>
       <button
@@ -77,7 +95,10 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
               <CommandGroup key={label} heading={label}>
                 {data?.map(({ icon, id, name }) => {
                   return (
-                    <CommandItem key={id}>
+                    <CommandItem
+                      key={id}
+                      onSelect={() => handleNavigation({ id, type })}
+                    >
                       {icon}
                       <span>{name}</span>
                     </CommandItem>
