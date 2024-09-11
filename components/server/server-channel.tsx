@@ -43,13 +43,14 @@ const ServerChannel = ({ channel, role, server }: ServerChannelProps) => {
         <div className="ml-auto flex items-center gap-x-2">
           <ActionToolTip label="Edit Channel" side="top">
             <Edit
+              onClick={() => onOpen("editChannel", { server, channel })}
               className="hidden group-hover:block w-4 h-4 text-zinc-500
             hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
             />
           </ActionToolTip>
           <ActionToolTip label="Delete Channel" side="top">
             <Trash
-              onClick={() => onOpen("deleteChannel",{server,channel})}
+              onClick={() => onOpen("deleteChannel", { server, channel })}
               className="hidden group-hover:block w-4 h-4 text-zinc-500
             hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
             />
