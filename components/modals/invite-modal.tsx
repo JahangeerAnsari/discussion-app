@@ -16,6 +16,7 @@ import { Check, Copy, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCurrentOrigin } from "@/hooks/currnet-origin";
 import axios from "axios";
+
 const InviteModal = () => {
   const { isOpen, onClose, type, data ,onOpen} = useStoreModal();
   const {server} =data
