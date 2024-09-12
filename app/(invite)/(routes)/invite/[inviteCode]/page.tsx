@@ -1,27 +1,26 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import {  SignIn } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface InviteLinkProps {
-  params: { inviteCode: string };
+  params?: { inviteCode: string };
 }
 // if there is invite code add to the new server
 const InviteLink = async ({ params }: InviteLinkProps) => {
-  console.log("params", params);
+  console.log("params1222222222222", params);
   const profile = await currentProfile();
   if (!profile) {
-
     return <SignIn />;
   }
-  if (!params.inviteCode) {
+  if (!params?.inviteCode) {
     return redirect("/");
   }
 
   // lets this invite code part of server of any profile
   const existingServer = await db.server.findUnique({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: params?.inviteCode,
       members: {
         some: {
           profileId: profile.id,
@@ -35,7 +34,7 @@ const InviteLink = async ({ params }: InviteLinkProps) => {
   // if new invitecode then add to the member into the server
   const server = await db.server.update({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: params?.inviteCode,
     },
     // adding new member by invite code to the
     data: {

@@ -1,11 +1,45 @@
-"use client";
-const ServerPage = () => {
+import { currentProfile } from "@/lib/current-profile";
+import { db } from "@/lib/db";
+import { SignIn } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
-  return (
-    <div>
-      <h1>okay right part</h1>
-    </div>
-  );
+interface ServerPageProps {
+  params: { serverId: string };
+}
+const ServerPage = async ({ params }: ServerPageProps) => {
+  console.log("params333", params);
+  //  lets find the server with serverId
+  const profile = await currentProfile();
+  if (!profile) {
+    return <SignIn />;
+  }
+  const server = await db.server.findUnique({
+    where: {
+      id: params?.serverId,
+      members: {
+        some: {
+          profileId: profile.id,
+        },
+      },
+    },
+    include: {
+      channels: {
+        where: {
+          name: "general",
+        },
+        orderBy:{
+          createdAt:"asc"
+        }
+      },
+    },
+  });
+//  this is initial channel
+const initialChannel = server?.channels[0];
+  if(initialChannel?.name !== 'general') {
+    return null;
+  }
+  
+  return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`)
 };
 
 export default ServerPage;
