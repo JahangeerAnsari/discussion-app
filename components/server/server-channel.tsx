@@ -4,7 +4,7 @@ import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 import { Hash, Video, Mic, Edit, Trash, Lock } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import ActionToolTip from "@/components/action-tooltip";
-import { useStoreModal } from "@/hooks/use-modal-store";
+import { useStoreModal, ModalTypes } from "@/hooks/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -21,9 +21,17 @@ const ServerChannel = ({ channel, role, server }: ServerChannelProps) => {
   const params = useParams();
   const router = useRouter();
   const Icon = iconMaps[channel.type];
+  const handleChannelNavigation = () => {
+    router.push(`/servers/${params.serverId}/channels/${channel.id}`);
+  };
+  // avoid ovveride navigation
+  const handleModalOpen = (e: React.MouseEvent, action: ModalTypes) => {
+    e.stopPropagation();
+    onOpen(action, { channel, server });
+  };
   return (
     <button
-      onClick={() => {}}
+      onClick={handleChannelNavigation}
       className={cn(
         "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:bg-zinc-700/50 transition mb-1",
         params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700"
@@ -43,14 +51,16 @@ const ServerChannel = ({ channel, role, server }: ServerChannelProps) => {
         <div className="ml-auto flex items-center gap-x-2">
           <ActionToolTip label="Edit Channel" side="top">
             <Edit
-              onClick={() => onOpen("editChannel", { server, channel })}
+              onClick={(e) => handleModalOpen(e, "editChannel")}
+              // onClick={() => onOpen("editChannel", { server, channel })}
               className="hidden group-hover:block w-4 h-4 text-zinc-500
             hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
             />
           </ActionToolTip>
           <ActionToolTip label="Delete Channel" side="top">
             <Trash
-              onClick={() => onOpen("deleteChannel", { server, channel })}
+              // onClick={() => onOpen("deleteChannel", { server, channel })}
+              onClick={(e) => handleModalOpen(e, "deleteChannel")}
               className="hidden group-hover:block w-4 h-4 text-zinc-500
             hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
             />
