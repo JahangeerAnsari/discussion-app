@@ -1,0 +1,32 @@
+import { Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import NavigationSidebar from "@/components/navigation/navigation-sidebar";
+import ServerSideBar from "./server/server-sidebar";
+interface MobileToggleProps {
+  serverId: string;
+}
+export const MobileToggle = ({ serverId }: MobileToggleProps) => {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button>
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="p-0 flex gap-0">
+        <div className="w-[72px]">
+          <NavigationSidebar />
+        </div>
+        <ServerSideBar serverId={serverId} />
+      </SheetContent>
+    </Sheet>
+  );
+};
