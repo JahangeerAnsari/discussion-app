@@ -1,15 +1,13 @@
 import { db } from "@/lib/db"
 
 export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) =>{
- try {
-  let conversation = await findConversation(memberOneId, memberTwoId);
+ let conversation = await findConversation(memberOneId, memberTwoId) || await findConversation(memberTwoId,memberOneId);
+  console.log("conversation1",conversation);
+  
   if(!conversation){
    conversation = await createConversation(memberOneId, memberTwoId);
   }
- } catch (error) {
-  console.log("Error on getting Conversation",error);
-  
- }
+  return conversation;
 }
 
 const findConversation = async(memberOneId: string, memberTwoId: string) =>{
