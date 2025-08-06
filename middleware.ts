@@ -1,6 +1,8 @@
+
 import { clerkMiddleware,authMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)","/api/uploadthing"]);
+
 
 
 export default clerkMiddleware((auth, request) => {
@@ -17,3 +19,5 @@ export const config = {
     "/(api|trpc)(.*)",
   ],
 };
+
+
